@@ -1,5 +1,5 @@
 export Strip, send_bytes, send_colors
-export set_colors!, hide_colors, show_colors
+export set_colors!, shift_forward!, shift_backward!, hide_colors, show_colors
 
 # MOSI - output #10 (alt0)
 # MISO - input #09 (alt0)
@@ -33,6 +33,24 @@ function set_colors!(strip::Strip, arr::AbstractArray{UInt32})
     for i in 1:min(strip.led_count, length(arr))
         strip.buffer[i] = arr[i]
     end
+end
+
+function shift_forward!(strip::Strip)
+    last_color = last(strip.buffer)
+    for i in length(strip.buffer):-1:2
+        strip.buffer[i] = strip.buffer[i-1]
+    end
+    strip.buffer[1] = last_color
+    #pushfirst!()
+end
+
+function shift_backward!(strip::Strip)
+    first_color = first(strip.buffer)
+    for i in 1:(length(strip.buffer)-1)
+        strip.buffer[i] = strip.buffer[i+1]
+    end
+    strip.buffer[strip.led_count] = first_color
+    #pushfirst!()
 end
 
 function show_colors(strip::Strip)
