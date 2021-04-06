@@ -1,0 +1,4 @@
+module LEDStrip
+
+
+end # module

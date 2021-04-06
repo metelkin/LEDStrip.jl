@@ -1,0 +1,12 @@
+# This file is machine-generated - editing it directly is not advised
+
+[[BaremetalPi]]
+deps = ["Mmap"]
+git-tree-sha1 = "71aa5b1c41a1fb50eaa96f2132af7686ff34a6a8"
+repo-rev = "master"
+repo-url = "https://github.com/ronisbr/BaremetalPi.jl"
+uuid = "3a90a9a9-52f9-452b-94bd-193d585bd84f"
+version = "0.1.1"
+
+[[Mmap]]
+uuid = "a63ad114-7e13-5084-954f-fe012c677804"

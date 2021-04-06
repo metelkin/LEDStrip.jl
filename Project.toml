@@ -1,0 +1,7 @@
+name = "LEDStrip"
+uuid = "b7058fe8-a6c5-424b-9932-058af9fdabc0"
+authors = ["Evgeny Metelkin <metelkin@insysbio.com>"]
+version = "0.1.0"
+
+[deps]
+BaremetalPi = "3a90a9a9-52f9-452b-94bd-193d585bd84f"
