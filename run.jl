@@ -2,7 +2,7 @@
 #x = UInt8(12)
 #bitstring(x)
 
-using BaremetalPi
+using LEDStrip
 
 # bit version
 send1 = [ # experimental 1) green 2) red 3) blue
@@ -85,20 +85,14 @@ send_black = [
     0b10010010,0b01001001,0b00100100, 0b10010010,0b01001001,0b00100100, 0b10010010,0b01001001,0b00100100, # black
 ]
 
-# required rate calculated based on 3 bits per signal: 1.25 us => 0.8 MHz signal => 2.4 MHz
-
 @info "Starting..."
 
-# MOSI - output #10 (alt0)
-# MISO - input #09 (alt0)
-# SCLK - clock #11 (alt0)
-
-init_spi("/dev/spidev0.0"; max_speed_hz = 2_400_000)
+s = Strip(1)
 
 for i in 1:10
-    spi_transfer(1, send1)
+    send(s, send1)
     sleep(0.5)
-    spi_transfer(1, send_black)
+    send(s, send_black)
     sleep(0.5)
 end
 
