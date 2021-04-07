@@ -1,5 +1,5 @@
 export Strip, send_bytes, send_colors
-export set_colors!, shift_forward!, shift_backward!, hide_colors, show_colors
+export set_colors!, clean_colors!, shift_forward!, shift_backward!, hide_colors, show_colors
 
 # MOSI - output #10 (alt0)
 # MISO - input #09 (alt0)
@@ -9,7 +9,7 @@ struct Strip
     spi::Int
     led_count::Int
     freq::Int
-    buffer::AbstractArray{UInt32} # 
+    buffer::AbstractArray{UInt32}
 end
 
 # required rate calculated based on 3 bits per signal: 1.25 us => 0.8 MHz signal => 2.4 MHz
@@ -29,28 +29,47 @@ function Strip(spi::Int; led_count::Int = 10, freq::Int = 800_000)
     Strip(spi, led_count, freq, zeros(UInt32, led_count))
 end
 
-function set_colors!(strip::Strip, arr::AbstractArray{UInt32})
-    for i in 1:min(strip.led_count, length(arr))
-        strip.buffer[i] = arr[i]
+function set_colors!(strip::Strip, arr::AbstractArray{UInt32}; replicate::Bool = false)
+    if replicate
+        template = repeat(arr, ceil(Int, strip.led_count / length(arr)))
+        for i in 1:strip.led_count
+            strip.buffer[i] = template[i]
+        end
+    else
+        for i in 1:min(strip.led_count, length(arr))
+            strip.buffer[i] = arr[i]
+        end
     end
 end
 
-function shift_forward!(strip::Strip)
+function clean_colors!(strip::Strip)
+    for i in 1:strip.led_count
+        strip.buffer[i] = 0x0
+    end
+end
+
+function shift_forward!(strip::Strip; circular::Bool = false)
     last_color = last(strip.buffer)
     for i in length(strip.buffer):-1:2
         strip.buffer[i] = strip.buffer[i-1]
     end
-    strip.buffer[1] = last_color
-    #pushfirst!()
+    if circular
+        strip.buffer[1] = last_color
+    else
+        strip.buffer[1] = 0x0
+    end
 end
 
-function shift_backward!(strip::Strip)
+function shift_backward!(strip::Strip; circular::Bool = false)
     first_color = first(strip.buffer)
     for i in 1:(length(strip.buffer)-1)
         strip.buffer[i] = strip.buffer[i+1]
     end
-    strip.buffer[strip.led_count] = first_color
-    #pushfirst!()
+    if circular
+        strip.buffer[strip.led_count] = first_color
+    else
+        strip.buffer[strip.led_count] = 0x0
+    end
 end
 
 function show_colors(strip::Strip)
@@ -63,17 +82,17 @@ function hide_colors(strip::Strip)
 end
 
 function send_bytes(strip::Strip, byte_array::AbstractArray{UInt8})
-    led_byte_array = _led_byte_array(byte_array)
+    led_byte_array = _bytes_to_led_bytes(byte_array)
     spi_transfer(strip.spi, led_byte_array)
 end
 
 function send_colors(strip::Strip, color_array::AbstractArray{UInt32})
-    led_byte_array = _led_byte_array(color_array)
-    spi_transfer(strip.spi, led_byte_array)
+    byte_array = _colors_to_bytes(color_array)
+    send_bytes(strip, byte_array)
 end
 
 # transforms bits to bits adapted for LED strip
-function _led_byte_array(byte_array::AbstractArray{UInt8})
+function _bytes_to_led_bytes(byte_array::AbstractArray{UInt8})
     output = UInt8[]
 
     for x in byte_array
@@ -100,7 +119,7 @@ function _led_byte_array(byte_array::AbstractArray{UInt8})
     output
 end
 
-function _led_byte_array(color_array::AbstractArray{UInt32})
+function _colors_to_bytes(color_array::AbstractArray{UInt32})
     output = UInt8[]
 
     for x in color_array
@@ -113,5 +132,5 @@ function _led_byte_array(color_array::AbstractArray{UInt32})
         push!(output, green_part, red_part, blue_part)
     end
 
-    _led_byte_array(output)
+    output
 end
