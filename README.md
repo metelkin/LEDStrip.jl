@@ -41,11 +41,11 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
 
 1. Circuits
 
-    **1A** LED strip can be connected based on the following scheme.
+    **A** LED strip can be connected based on the following scheme.
     SN74AHCT125N chip is required if 3.3V output is not enough for RGB Strip DIN. The chip transforms the signal to 5V logic.
     ![scheme-chip](./scheme-chip.png)
 
-    **1B** Some LED Strips can work with 3.3V signal. In that case the chip is not required.
+    **B** Some LED Strips can work with 3.3V output signal. In that case the chip is not required.
     ![scheme-no-chip](./scheme-no-chip.png)
 
 ## Usage
@@ -60,7 +60,7 @@ using LEDStrip
 s = Strip(1; led_count = 100) 
 
 # set pixels 1, 2, 3, 4 as red, green, blue, white
-# for 5 seconds, that off
+# for 5 seconds, then off
 set_colors!(s, [0xff0000, 0xff0000, 0x00ff00, 0xffffff])
 show_colors(s)
 sleep(5.)
@@ -91,8 +91,10 @@ PWM and PCM protocols can be potentially used as well.
 ## Related projects
 
 - C library with connectors to Python and other languages (but not Julia)
-<https://github.com/jgarff/rpi_ws281x>
-- 
+    <https://github.com/jgarff/rpi_ws281x>
+- NodeJS package
+    https://www.npmjs.com/package/rpi-ws281x
+
 
 ## License
 
