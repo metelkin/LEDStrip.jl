@@ -77,12 +77,16 @@ PWM and PCM protocols can be potentially used as well.
 ### TODO list
 
 - [x] SPI, pins: GPIO10 or GPIO20
-- [] soft PWM, pins: any?
-- [] hard PWM (interfering with analog audio)
-- [] PCM (interfering with digital audio)
+- [ ] soft PWM, pins: any?
+- [-] hard PWM (interfering with analog audio)
+- [ ] PCM (interfering with digital audio)
 
 ## Useful links
 
 - C library with connectors to Python and other languages (but not Julia)
 <https://github.com/jgarff/rpi_ws281x>
+
+## License
+
+Published under [MIT License](LICENSE)
 
