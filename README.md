@@ -39,10 +39,14 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
     ] add https://github.com/metelkin/LEDStrip.jl.git
     ```
 
-1. LED strip can be connected based on the following scheme.
- SN74AHCT125N chip is required if 3.3V output is not enough for RGB Strip DIN. The chip transforms the signal to 5V logic.
+1. Circuits
 
-![scheme-chip](./scheme-chip.png)
+    **1A** LED strip can be connected based on the following scheme.
+    SN74AHCT125N chip is required if 3.3V output is not enough for RGB Strip DIN. The chip transforms the signal to 5V logic.
+    ![scheme-chip](./scheme-chip.png)
+
+    **1B** Some LED Strips can work with 3.3V signal. In that case the chip is not required.
+    ![scheme-no-chip](./scheme-no-chip.png)
 
 ## Usage
 
@@ -69,6 +73,10 @@ You can also clone the repository and use test cases.
 julia --project=. run.jl
 ```
 
+## Video demo
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/0c5QVqN6y7E" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Known issues and limitations
 
 Currently only SPI is supported via GPIO10 and GPIO20.
@@ -78,13 +86,14 @@ PWM and PCM protocols can be potentially used as well.
 
 - [x] SPI, pins: GPIO10 or GPIO20
 - [ ] soft PWM, pins: any?
-- [-] hard PWM (interfering with analog audio)
+- [ ] hard PWM (interfering with analog audio)
 - [ ] PCM (interfering with digital audio)
 
-## Useful links
+## Related projects
 
 - C library with connectors to Python and other languages (but not Julia)
 <https://github.com/jgarff/rpi_ws281x>
+- 
 
 ## License
 
