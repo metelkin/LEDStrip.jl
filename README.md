@@ -17,9 +17,9 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
 ## Installation
 
 1. You need Raspberry Pi with the default OS installed.
-    I tested on Raspberry Pi 4 (Raspberry Pi OS 32bit) but is should be working with other Raspberry versions and OS.
+    I tested on Raspberry Pi 4 (Raspberry Pi OS 32bit) but it should be working with other Raspberry versions and OS.
 1. SPI protocol should be turn on, see OS settings.
-1. In other tutorials is also recommended to set frequency in the file `/boot/config.txt` as follows
+1. In other tutorials it is also recommended to set frequency in the file `/boot/config.txt` as follows
     ```txt
     core_freq=500
     core_freq_min=500
@@ -28,7 +28,7 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
     ```
 1. Julia should be installed on Raspberry Pi. 
     I have tested on v1.1.0 which can be installed with
-    ```bash
+    ```sh
     sudo apt update
     sudo apt install julia
     ```
@@ -41,18 +41,18 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
 
 1. Circuits
 
-    **A** LED strip can be connected based on the following scheme.
-    SN74AHCT125N chip is required if 3.3V output is not enough for RGB Strip DIN. The chip transforms the signal to 5V logic.
+    **A.** LED strip can be connected based on the following scheme.
+    The chip transforming the PI's 3.3V signal to 5V logic may be required if 3.3 signal is not enough for RGB Strip DIN. I use SN74AHCT125N chip.
     ![scheme-chip](./scheme-chip.png)
 
-    **B** Some LED Strips can work with 3.3V output signal. In that case the chip is not required.
+    **B.** In many cases LED Strips can work with 3.3V output signal. In that case the chip is not required.
     ![scheme-no-chip](./scheme-no-chip.png)
 
 ## Usage
 
 "Hello World!" example
 
-```heta
+```julia
 using LEDStrip
 
 # set first SPI with GPIO10 (pin #19)
