@@ -1,6 +1,6 @@
 # RGB Led Strip
 
-It is a Julia package for controlling addressable RGB LED Strip (WS281x chip) with Raspberry Pi. 
+Raspberry Pi package for controlling addressable RGB LED Strip on **WS281x chip** (Neopixel) written in Julia. 
 
 *NOTE! This package should be considered alpha. Not all features are implemented. But basically it works.*
 
@@ -9,7 +9,7 @@ It is a Julia package for controlling addressable RGB LED Strip (WS281x chip) wi
 
 ## Introduction
 
-The addressable RGB LED strip, which are based on WS281x chip or similar, is popular for different education and DIY projects.
+The addressable RGB LED strip, which are based on **WS281x chip** or similar, is popular for different education and DIY projects.
 It allows controlling the each pixel of strip and creating a nice colored show. On the [YouTube you can find examples](https://www.youtube.com/results?search_query=addressable+led+strip+raspberry+pi) how [Raspberry Pi](https://www.raspberrypi.org/) can be used for it.
 
 This is a Julia's package for LED strip control which is based on [BaremetalPi.jl](https://github.com/ronisbr/BaremetalPi.jl) engine.
@@ -24,7 +24,7 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
     core_freq=500
     core_freq_min=500
 
-    # spidev.bufsiz=32768 # if SPI buffer too low
+    # spidev.bufsiz=32768 # if default SPI buffer too small
     ```
 1. Julia should be installed on Raspberry Pi. 
     I have tested on v1.1.0 which can be installed with
@@ -42,7 +42,7 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
 1. Circuits
 
     **A.** LED strip can be connected based on the following scheme.
-    The chip transforming the PI's 3.3V signal to 5V logic may be required if 3.3 signal is not enough for RGB Strip DIN. I use SN74AHCT125N chip.
+    If the 3.3V signal is not enough for RGB Strip DIN a chip transforming 3.3V to 5V logic may be required. I used **SN74AHCT125N** chip.
     ![scheme-chip](./scheme-chip.png)
 
     **B.** In many cases LED Strips can work with 3.3V output signal. In that case the chip is not required.
@@ -55,22 +55,22 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
 ```julia
 using LEDStrip
 
-# set first SPI with GPIO10 (pin #19)
+# use main SPI MOSI connector is GPIO10
 # total pixels count is 100
-s = Strip(1; led_count = 100) 
+s = SPIStrip(0; pixel_count = 100) 
 
 # set pixels 1, 2, 3, 4 as red, green, blue, white
 # for 5 seconds, then off
-set_colors!(s, [0xff0000, 0xff0000, 0x00ff00, 0xffffff])
-show_colors(s)
+set_pixels!(s, [0xff0000, 0x00ff00, 0x00ff00, 0xffffff]) # update buffer
+show_pixels(s) # show buffered colors
 sleep(5.)
-hide_colors(s)
+hide_pixels(s) # hide all colors
 ```
 
 You can also clone the repository and use test cases.
 
 ```sh
-julia --project=. run.jl
+julia --project=. test/run.jl
 ```
 
 ## Video demo
@@ -99,4 +99,3 @@ PWM and PCM protocols can be potentially used as well.
 ## License
 
 Published under [MIT License](LICENSE)
-
