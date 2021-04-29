@@ -1,7 +1,7 @@
 # low level interface
 export SPIStrip, send_bytes, send_colors
 
-# higher level interface
+# high level interface
 export set_pixel!, set_pixels!, clean_pixels!, shift_forward!, shift_backward!, hide_pixels, show_pixels
 
 ### MAIN SPI

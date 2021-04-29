@@ -24,7 +24,7 @@ const RAINBOW_COLORS = [
     0x00FF00,   # green
     0x0000FF,   # lightblue
     0x4B0082,   # blue
-    0x9400D3,   # purple
+    0x9400D3,   # violet
 ]      
 
 const PIXEL_COUNT = 100
@@ -48,8 +48,6 @@ sleep(5.)
 hide_pixels(s)
 clean_pixels!(s)
 
-@info "Stop."
-
 ##########################
 
 @info "All RED... All GREEN... All BLUE... All WHITE..."
@@ -63,12 +61,13 @@ sleep(5)
 set_pixels!(s, [0x0000ff]; replicate = true)
 show_pixels(s)
 sleep(5)
+set_pixels!(s, [0xffffff]; replicate = true)
+show_pixels(s)
+sleep(5)
 
 hide_pixels(s)
 clean_pixels!(s)
 sleep(1.)
-
-@info "Stop."
 
 @info "Rainbow 7 colors..."
 
@@ -78,8 +77,6 @@ sleep(5)
 hide_pixels(s)
 clean_pixels!(s)
 sleep(1.)
-
-@info "Stop."
 
 @info "W-W-W-W-W-W-W-W-R-G-B snake moves forward and back..."
 
