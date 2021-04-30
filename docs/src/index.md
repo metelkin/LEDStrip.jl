@@ -13,7 +13,9 @@ This is a Julia's package for LED strip control which is based on [BaremetalPi.j
 
 1. You need Raspberry Pi with the default OS installed.
     I tested on Raspberry Pi 4 (Raspberry Pi OS 32bit) but it should be working with other Raspberry versions and OS.
+
 1. SPI protocol should be turn on, see OS settings.
+
 1. In other tutorials it is also recommended to set frequency in the file `/boot/config.txt` as follows
 ```txt
 core_freq=500
@@ -21,6 +23,7 @@ core_freq_min=500
 
 # spidev.bufsiz=32768 # if default SPI buffer too small
 ```
+
 1. Julia should be installed on Raspberry Pi. 
     I have tested on v1.1.0 which can be installed with
 ```sh
@@ -28,13 +31,13 @@ sudo apt update
 sudo apt install julia
 ```
 
-1. The package can be installed as usual (from Julia env):
+1. The package can be installed with (from Julia env):
 
 ```julia
 ] add https://github.com/metelkin/LEDStrip.jl.git
 ```
 
-1. Circuits
+## Circuits
 
 **A.** LED strip can be connected based on the following scheme.
 If the 3.3V signal is not enough for RGB Strip DIN a chip transforming 3.3V to 5V logic may be required. I used **SN74AHCT125N** chip.

@@ -6,7 +6,7 @@ Raspberry Pi package for controlling addressable RGB LED Strip on **WS281x chip*
 
 [![GitHub issues](https://img.shields.io/github/issues/metelkin/LEDStrip.jl.svg)](https://GitHub.com/metelkin/LEDStrip.jl/issues/)
 [![GitHub license](https://img.shields.io/github/license/metelkin/LEDStrip.jl.svg)](https://github.com/metelkin/LEDStrip.jl/blob/master/LICENSE)
-[![Documentation](https://img.shields.io/badge/docs-latest-blue.svg)](https://metelkin.github.io/LEDStrip.jl/latest)
+[![Documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://metelkin.github.io/LEDStrip.jl/dev)
 
 ## More info
 
