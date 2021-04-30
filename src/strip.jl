@@ -1,5 +1,5 @@
 # low level interface
-export SPIStrip, send_bytes, send_colors
+export StripSPI, send_bytes, send_colors
 
 # high level interface
 export set_pixel!, set_pixels!, clean_pixels!, shift_forward!, shift_backward!, hide_pixels, show_pixels
@@ -14,7 +14,7 @@ export set_pixel!, set_pixels!, clean_pixels!, shift_forward!, shift_backward!, 
 abstract type AbstractStrip end
 
 """
-    struct SPIStrip
+    struct StripSPI
         spi::Int                        # SPI number 1 or 2
         pixel_count::Int                # number of pixels in RGB Strip, equals to buffer size
         freq::Int                       # frequency in Hz for sending messages to WS281x chip
@@ -24,15 +24,15 @@ abstract type AbstractStrip end
 
 Object storing settings and states of addressable LED Strip.
 
-SPIStrip includes the intermediate buffer which is a variable storing pixel colors in RGB.
+StripSPI includes the intermediate buffer which is a variable storing pixel colors in RGB.
 
-There are two ways working with SPIStrip:
+There are two ways working with StripSPI:
 
 1. Sending colors directly to Strip using the methods like `send_bytes`, `send_colors`.
 
 2. Updating buffer values and make changes visible after that using methods: `set_pixels!`, `clean_pixels!`, `show_pixels`, etc.
 """
-struct SPIStrip <: AbstractStrip
+struct StripSPI <: AbstractStrip
     spi::Int
     pixel_count::Int
     freq::Int
@@ -42,7 +42,7 @@ end
 
 # required rate calculated based on 3 bits per signal: 1.25 us => 0.8 MHz signal => 2.4 MHz
 """
-    SPIStrip(
+    StripSPI(
         spi::Int;
         pixel_count::Int = 10,
         freq::Int = 800_000,
@@ -74,7 +74,7 @@ Creates object representing LED Strip.
     Valid values are "rgb", "rbg", "grb", "gbr", "bgr", "brg".
 
 """
-function SPIStrip(spi::Int; pixel_count::Int = 10, freq::Int = 800_000, color_type::String = "grb")
+function StripSPI(spi::Int; pixel_count::Int = 10, freq::Int = 800_000, color_type::String = "grb")
     # init
     if spi == 1
         path = "/dev/spidev0.0"
@@ -91,12 +91,12 @@ function SPIStrip(spi::Int; pixel_count::Int = 10, freq::Int = 800_000, color_ty
     strip_seq = split(color_type, "")
     color_indexes = indexin(strip_seq, ["r","g","b"]) # example [2,1,3] for "grb"
 
-    SPIStrip(spi, pixel_count, freq, color_indexes, zeros(UInt32, pixel_count))
+    StripSPI(spi, pixel_count, freq, color_indexes, zeros(UInt32, pixel_count))
 end
 
 """
     send_bytes(
-        strip::SPIStrip,
+        strip::StripSPI,
         byte_array::AbstractArray{UInt8}
     )
 
@@ -108,14 +108,14 @@ The method does not update the internal buffer of Strip object.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 
 - `byte_array`: Array of bytes `UInt8` to send. 
     First byte will be send to first LED (green), the second one will be send to second LED (red), etc.
     The byte's value regulates the brightness of corresponding LED. Three bytes together 
     regulates the color of pixel.
 """
-function send_bytes(strip::SPIStrip, byte_array::AbstractArray{UInt8})
+function send_bytes(strip::StripSPI, byte_array::AbstractArray{UInt8})
     led_byte_array = _bytes_to_led_bytes(byte_array)
     spi_transfer(strip.spi, led_byte_array)
 end
@@ -141,7 +141,7 @@ the other pixels will not be updated.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 
 - `color_array`:  Each color is an unsigned 32-bit value (`UInt32`) where 
     the lower 24 bits define the red, green, blue data (each being 8 bits long).
@@ -171,7 +171,7 @@ Set pixel #10 as green and make it visible.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 
 - `num`: number of pixel in strip starting from 1.
 
@@ -193,7 +193,7 @@ To make it visible you must use `show_pixels` after updating.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 
 - `color_arr`: `UInt32` vector representing color and brightness for all pixels in Strip.
     If this vector is longer than the buffer length the rest values will be ignored.
@@ -223,7 +223,7 @@ To make it visible you must use `show_pixels` after.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 """
 function clean_pixels!(strip::AbstractStrip)
     for i in 1:strip.pixel_count
@@ -240,7 +240,7 @@ This method make it visible in physical pixels.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 """
 function show_pixels(strip::AbstractStrip)
     send_colors(strip, strip.buffer)
@@ -255,7 +255,7 @@ You can hide and show colors but buffer content will be the same.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 """
 function hide_pixels(strip::AbstractStrip)
     all_black = zeros(UInt32, strip.pixel_count)
@@ -273,7 +273,7 @@ This can be used to create animation.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 
 - `circular`: If `true` the #1 pixel will be set as the last one.
     If `false` the first value will be 0x000000 (black).
@@ -301,7 +301,7 @@ This can be used to create animation.
 
 ## Arguments
 
-- `strip`: SPIStrip object
+- `strip`: StripSPI object
 
 - `circular`: If `true` the last pixel will be set as first.
     If `false` the last value will be 0x000000 (black).

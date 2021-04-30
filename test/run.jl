@@ -28,7 +28,7 @@ const RAINBOW_COLORS = [
 ]      
 
 const PIXEL_COUNT = 100
-s = SPIStrip(1; pixel_count = PIXEL_COUNT)
+s = StripSPI(1; pixel_count = PIXEL_COUNT)
 
 ############################
 

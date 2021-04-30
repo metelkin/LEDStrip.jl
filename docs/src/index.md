@@ -1,6 +1,6 @@
-# LEDStrip.jl package
+# LEDStrip.jl
 
-Raspberry Pi package for controlling addressable RGB LED Strip on **WS281x chip** (Neopixel) written in Julia. 
+Raspberry Pi package for controlling addressable RGB LED Strip on **WS281x chip** (Neopixel). 
 
 ## Introduction
 
@@ -27,7 +27,7 @@ The package can be installed from Julia environment with:
 ### Notes
 
 I have tested on RaspberryPi 4 with the [Raspberry Pi OS](https://www.raspberrypi.org/software/operating-systems/#raspberry-pi-os-32-bit) installed.
-It seems it should work it should be working with other Raspberry versions and OS.
+It seems it should work with other Raspberry versions and OS.
 
 SPI protocol should be turn on, see OS settings.
 
@@ -37,9 +37,9 @@ core_freq=500
 core_freq_min=500
 ```
 
-In older versions of RasperryPi one should extend the SPI buffer size in `/boot/config.txt`.
+In older versions of RasperryPi you possibly should extend the SPI buffer size in `/boot/config.txt`.
 ```txt
-# spidev.bufsiz=32768 # if default SPI buffer too small
+spidev.bufsiz=32768 # if default SPI buffer too small
 ```
 
 See also the notes in other projects like here: <https://github.com/jgarff/rpi_ws281x>
@@ -49,7 +49,7 @@ See also the notes in other projects like here: <https://github.com/jgarff/rpi_w
 ### A.
 
 LED strip can be connected based on the following scheme.
-RaspberryPi's 5V output is not enough as power for RGB LEd Strip. Use external power source.
+RaspberryPi's 5V output is not enough as power for RGB LED Strip. Use external power source.
 
 In many cases LED Strips can work with 3.3V output signal.
 In that case you need no additional chip elements.
@@ -63,14 +63,14 @@ If the 3.3V signal is not enough for RGB Strip DIN a chip transforming 3.3V to 5
 
 ## Usage
 
-You can work with LEd pixels directly or using the internal `LEDStrip` buffer.
+You can work with LED pixels directly or using the internal `LEDStrip` buffer.
 
 ```julia
 using LEDStrip
 
 # use main SPI MOSI connector is GPIO10
 # total pixels count is 100
-s = SPIStrip(1; pixel_count = 100) 
+s = StripSPI(1; pixel_count = 100) 
 
 ### Direct approach ###
 
