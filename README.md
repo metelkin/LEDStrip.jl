@@ -1,4 +1,4 @@
-# RGB Led Strip
+# LEDStrip.jl package
 
 Raspberry Pi package for controlling addressable RGB LED Strip on **WS281x chip** (Neopixel) written in Julia. 
 
@@ -10,7 +10,7 @@ Raspberry Pi package for controlling addressable RGB LED Strip on **WS281x chip*
 
 ## More info
 
-[See the docs](metelkin.github.com/LEDStrip.jl/).
+[See the docs](https://metelkin.github.io/LEDStrip.jl/dev).
 
 ### TODO list
 
