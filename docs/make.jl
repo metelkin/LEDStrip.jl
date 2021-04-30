@@ -10,3 +10,8 @@ makedocs(
         "API" => "api.md",
     ],
 )
+
+deploydocs(
+    repo = "github.com/metelkin/LEDStrip.jl.git",
+    target = "build",
+)
